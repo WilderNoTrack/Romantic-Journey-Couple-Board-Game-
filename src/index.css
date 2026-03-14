@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ee2b4b;
+  --color-primary-hover: #d4203d;
+  --color-background-light: #f8f6f6;
+  --color-background-dark: #221013;
+  --color-mint: #e2f3f0;
+  --color-soft-pink: #fce7f3;
+  --color-light-red: #fee2e2;
+  --font-display: "Be Vietnam Pro", sans-serif;
+}
+
+/* ============ 主题变量系统 ============ */
+:root {
+  /* 背景色 */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-elevated: #ffffff;
+  --bg-gradient: linear-gradient(to bottom right, #f8fafc, #fce7f3, #f1f5f9);
+  
+  /* 文字色 */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  
+  /* 边框色 */
+  --border-primary: #e2e8f0;
+  --border-secondary: #f1f5f9;
+  --border-accent: rgba(238, 43, 75, 0.1);
+  
+  /* 语义背景色 */
+  --bg-pink: #fce7f3;
+  --bg-blue: #dbeafe;
+  --bg-green: #d1fae5;
+  --bg-purple: #f3e8ff;
+  --bg-amber: #fef3c7;
+  --bg-yellow: #fef9c3;
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  /* 背景色 */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-elevated: #1e293b;
+  --bg-gradient: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);
+  
+  /* 文字色 */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+  
+  /* 边框色 */
+  --border-primary: #334155;
+  --border-secondary: #1e293b;
+  --border-accent: rgba(238, 43, 75, 0.3);
+  
+  /* 语义背景色 */
+  --bg-pink: rgba(236, 72, 153, 0.15);
+  --bg-blue: rgba(59, 130, 246, 0.15);
+  --bg-green: rgba(16, 185, 129, 0.15);
+  --bg-purple: rgba(139, 92, 246, 0.15);
+  --bg-amber: rgba(245, 158, 11, 0.15);
+  --bg-yellow: rgba(234, 179, 8, 0.15);
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ============ 基础样式 ============ */
+html {
+  background-color: var(--bg-secondary);
+}
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: var(--text-primary);
+}
+
+/* ============ 滚动条 ============ */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

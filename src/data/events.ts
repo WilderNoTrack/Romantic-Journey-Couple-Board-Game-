@@ -1,0 +1,136 @@
+export const SPECIAL_EVENTS = [
+  {
+    id: 'meteor',
+    title: '流星许愿',
+    desc: '爱神听到了你们的祈祷！双方各获得一个随机道具',
+    icon: 'star',
+    color: 'bg-purple-500',
+  },
+  {
+    id: 'heartlink',
+    title: '心心相印',
+    desc: '你们的默契感动了上苍！双方位置变成相同',
+    icon: 'heart',
+    color: 'bg-pink-500',
+  },
+  {
+    id: 'blessing',
+    title: '爱神祝福',
+    desc: '爱神降临！获得50金币和30经验',
+    icon: 'sparkles',
+    color: 'bg-amber-500',
+  },
+  {
+    id: 'timespace',
+    title: '时空裂隙',
+    desc: '时空出现波动！双方随机传送到新位置',
+    icon: 'shuffle',
+    color: 'bg-indigo-500',
+  },
+  {
+    id: 'fortune',
+    title: '财神驾到',
+    desc: '财神路过！双方各获得30金币',
+    icon: 'coins',
+    color: 'bg-yellow-500',
+  },
+  {
+    id: 'lock',
+    title: '爱情锁链',
+    desc: '你们的爱锁住了！对方下回合不能使用道具',
+    icon: 'lock',
+    color: 'bg-rose-500',
+  },
+  {
+    id: 'rainbow',
+    title: '幸运彩虹',
+    desc: '彩虹降临！下次掷骰子必定为6点',
+    icon: 'rainbow',
+    color: 'bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500',
+  },
+];
+
+export const LONGDISTANCE_SPECIAL_EVENTS = [
+  {
+    id: 'video_date',
+    title: '视频约会',
+    desc: '立即和TA视频通话5分钟，增进感情！',
+    icon: 'video',
+    color: 'bg-blue-500',
+  },
+  {
+    id: 'photo_share',
+    title: '照片分享',
+    desc: '给对方发一张你的近照或有趣的照片！',
+    icon: 'image',
+    color: 'bg-pink-500',
+  },
+  {
+    id: 'memory_lane',
+    title: '回忆长廊',
+    desc: '分享一段你们之间的美好回忆！',
+    icon: 'book-open',
+    color: 'bg-purple-500',
+  },
+  {
+    id: 'next_meet',
+    title: '下次见面',
+    desc: '一起制定下次见面的计划和惊喜！',
+    icon: 'calendar',
+    color: 'bg-green-500',
+  },
+  {
+    id: 'miss_you',
+    title: '思念时刻',
+    desc: '告诉TA你有多想TA，用语音或文字表达思念！',
+    icon: 'heart',
+    color: 'bg-rose-500',
+  },
+  {
+    id: 'voice_message',
+    title: '语音消息',
+    desc: '给TA发一段语音，说出你想说的话！',
+    icon: 'mic',
+    color: 'bg-orange-500',
+  },
+  {
+    id: 'sweet_letter',
+    title: '甜蜜信件',
+    desc: '给对方写一段甜蜜的话，可以是情书或小纸条！',
+    icon: 'mail',
+    color: 'bg-yellow-500',
+  },
+  {
+    id: 'wish_plan',
+    title: '愿望清单',
+    desc: '告诉TA你想和TA一起做的三件事！',
+    icon: 'list',
+    color: 'bg-teal-500',
+  },
+];
+
+export const FATE_TYPES = [
+  { id: 'swap', title: '乾坤大挪移', desc: '你们的位置互换了！', color: 'bg-indigo-500', icon: 'shuffle' },
+  { id: 'steal', title: '散财童子', desc: '你偷走了对方一半的金币！', color: 'bg-amber-500', icon: 'coins' },
+  { id: 'bonus', title: '天降甘霖', desc: '你获得了 50 金币！', color: 'bg-emerald-500', icon: 'sparkles' },
+  { id: 'forward', title: '顺风顺水', desc: '前进 3 步！', color: 'bg-blue-500', icon: 'arrow-right' },
+  { id: 'backward', title: '逆水行舟', desc: '后退 2 步！', color: 'bg-red-500', icon: 'arrow-left' },
+  { id: 'wheel', title: '命运轮盘', desc: '命运再转一次！随机触发另一个命运', color: 'bg-violet-500', icon: 'rotate' },
+  { id: 'shieldbuy', title: '破财消灾', desc: '损失20金币，获得护盾效果！', color: 'bg-slate-500', icon: 'shield' },
+  { id: 'dash', title: '秒速前进', desc: '瞬间前进到下一个商店格！', color: 'bg-teal-500', icon: 'store' },
+  { id: 'itemswap', title: '物品互换', desc: '双方道具栏随机互换一个道具！', color: 'bg-orange-500', icon: 'repeat' },
+  { id: 'leveldown', title: '等级压制', desc: '对方等级-1（最低1级）', color: 'bg-gray-700', icon: 'arrow-down' },
+  { id: 'gift', title: '意外惊喜', desc: '获得一个随机道具！', color: 'bg-lime-500', icon: 'gift' },
+  { id: 'freeze', title: '禁足令', desc: '对方下回合不能移动！', color: 'bg-cyan-700', icon: 'snowflake' },
+];
+
+export const FINISH_BOXES = [
+  { id: 0, title: '浪漫大餐', desc: '对方请客吃一顿大餐！', icon: 'utensils' },
+  { id: 1, title: '免死金牌', desc: '免除一次家务！', icon: 'shield' },
+  { id: 2, title: '神秘礼物', desc: '对方需要为你准备一份小礼物！', icon: 'gift' },
+  { id: 3, title: '专属按摩', desc: '对方为你按摩30分钟！', icon: 'hand-heart' },
+  { id: 4, title: '电影之夜', desc: '对方陪你看一部电影！', icon: 'film' },
+  { id: 5, title: '深情告白', desc: '对方当面说10句情话！', icon: 'heart' },
+  { id: 6, title: '游戏时间', desc: '对方陪你玩1小时游戏！', icon: 'gamepad' },
+  { id: 7, title: '心愿达成', desc: '对方满足你一个小愿望！', icon: 'star' },
+];
