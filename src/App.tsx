@@ -231,7 +231,7 @@ export default function App() {
       } else {
         setRole(selectedRole);
         setGameState(res.room);
-        setChatMessages((res.room.chatMessages || []).reverse());
+        setChatMessages([...(res.room.chatMessages || [])].reverse());
         setStoredRoom(roomId, selectedRole);
       }
     });
@@ -253,7 +253,7 @@ export default function App() {
         setRoomId(targetRoomId);
         setRole(selectedRole);
         setGameState(res.room);
-        setChatMessages((res.room.chatMessages || []).reverse());
+        setChatMessages([...(res.room.chatMessages || [])].reverse());
         setStoredRoom(targetRoomId, selectedRole);
       }
     });
