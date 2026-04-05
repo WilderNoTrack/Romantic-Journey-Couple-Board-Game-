@@ -56,9 +56,13 @@ interface GameBoardProps {
   messages?: ChatMessage[];
   onSendMessage?: (message: string) => void;
   currentPlayer?: string;
+  onRollDice?: () => void;
+  isRolling?: boolean;
+  diceResult?: number | null;
+  isMyTurn?: boolean;
 }
 
-export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, messages, onSendMessage, currentPlayer }: GameBoardProps) {
+export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, messages, onSendMessage, currentPlayer, onRollDice, isRolling, diceResult, isMyTurn }: GameBoardProps) {
   const himAvatar = '/avatars/him-avatar.jpg';
   const herAvatar = '/avatars/her-avatar.jpg';
 
@@ -183,7 +187,7 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
           <div className="grid grid-cols-9 grid-rows-9 gap-1 md:gap-2 w-full aspect-square">
             {BOARD_TILES.map(tile => renderTile(tile.id, tile.type, tile.bgClass))}
             
-            <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner">
+            <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex flex-col items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner gap-4">
               {messages && onSendMessage && currentPlayer && (
                 <div className="w-full">
                   <ChatPanel
@@ -191,6 +195,31 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
                     onSendMessage={onSendMessage}
                     currentPlayer={currentPlayer}
                   />
+                </div>
+              )}
+              {onRollDice && isMyTurn !== undefined && (
+                <div className="w-full">
+                  <button
+                    onClick={onRollDice}
+                    disabled={!isMyTurn || isRolling}
+                    className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all shadow-md flex items-center justify-center gap-2
+                      ${isMyTurn && !isRolling 
+                        ? 'bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5' 
+                        : 'bg-slate-300 text-slate-500 cursor-not-allowed'}
+                    `}
+                  >
+                    {isRolling ? (
+                      <>
+                        <Shuffle className="w-6 h-6 animate-spin" />
+                        掷骰子中... {diceResult !== null && `${diceResult}点`}
+                      </>
+                    ) : (
+                      <>
+                        <Shuffle className="w-6 h-6" />
+                        掷骰子
+                      </>
+                    )}
+                  </button>
                 </div>
               )}
             </div>

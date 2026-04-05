@@ -386,6 +386,10 @@ export default function App() {
           messages={chatMessages}
           onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
           currentPlayer={myPlayer.name}
+          onRollDice={handleRollDice}
+          isRolling={isRolling}
+          diceResult={diceResult}
+          isMyTurn={canRoll}
         />
       </main>
 
