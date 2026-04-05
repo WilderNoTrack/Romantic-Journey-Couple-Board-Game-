@@ -615,9 +615,9 @@ io.on('connection', (socket) => {
       timestamp: Date.now(),
     };
 
-    room.chatMessages.unshift(chatMessage);
+    room.chatMessages.push(chatMessage);
     if (room.chatMessages.length > 100) {
-      room.chatMessages.pop();
+      room.chatMessages.shift();
     }
 
     io.to(roomId).emit('chatMessage', chatMessage);

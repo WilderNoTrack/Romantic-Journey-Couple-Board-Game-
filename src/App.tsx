@@ -54,6 +54,7 @@ export default function App() {
 
   const [localHimPos, setLocalHimPos] = useState(1);
   const [localHerPos, setLocalHerPos] = useState(1);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
 
   useEffect(() => {
     const stored = getStoredRoom();
@@ -191,6 +192,10 @@ export default function App() {
       setModalPlayer(triggerRole);
     });
 
+    socket.on('chatMessage', (msg) => {
+      setChatMessages(prev => [...prev, msg]);
+    });
+
     return () => {
       socket.off('gameStateUpdate');
       socket.off('diceRolled');
@@ -201,6 +206,7 @@ export default function App() {
       socket.off('levelUp');
       socket.off('boardLevelUp');
       socket.off('specialEvent');
+      socket.off('chatMessage');
     };
   }, [isRolling, role, roomId]);
 
@@ -225,6 +231,7 @@ export default function App() {
       } else {
         setRole(selectedRole);
         setGameState(res.room);
+        setChatMessages(res.room.chatMessages || []);
         setStoredRoom(roomId, selectedRole);
       }
     });
@@ -246,6 +253,7 @@ export default function App() {
         setRoomId(targetRoomId);
         setRole(selectedRole);
         setGameState(res.room);
+        setChatMessages(res.room.chatMessages || []);
         setStoredRoom(targetRoomId, selectedRole);
       }
     });
@@ -375,7 +383,7 @@ export default function App() {
           herJoined={!!gameState.players.her}
           himName={gameState.players.him?.name || '他'}
           herName={gameState.players.her?.name || '她'}
-          messages={gameState.chatMessages || []}
+          messages={chatMessages}
           onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
           currentPlayer={myPlayer.name}
         />

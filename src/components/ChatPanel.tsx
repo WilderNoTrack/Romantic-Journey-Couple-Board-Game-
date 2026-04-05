@@ -48,7 +48,7 @@ export default function ChatPanel({ messages, onSendMessage, currentPlayer }: Ch
   };
 
   return (
-    <div className="bg-[var(--bg-elevated)] rounded-xl shadow-sm border border-[var(--border-accent)] overflow-hidden flex flex-col max-h-[120px]">
+    <div className="bg-[var(--bg-elevated)] rounded-xl shadow-sm border border-[var(--border-accent)] overflow-hidden flex flex-col max-h-[500px]">
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 ? (
           <div className="text-center text-[var(--text-tertiary)] text-sm py-8">
