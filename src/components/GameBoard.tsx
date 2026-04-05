@@ -188,9 +188,9 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
             {BOARD_TILES.map(tile => renderTile(tile.id, tile.type, tile.bgClass))}
             
             <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner">
-              <div className="flex flex-col md:flex-row gap-4 w-full max-w-3xl">
+              <div className="flex flex-col gap-3 w-full max-w-3xl">
                 {messages && onSendMessage && currentPlayer && (
-                  <div className="flex-1 min-w-0">
+                  <div className="w-full">
                     <ChatPanel
                       messages={messages}
                       onSendMessage={onSendMessage}
@@ -200,7 +200,7 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
                 )}
                 
                 {onRollDice && (
-                  <div className="w-full flex items-center gap-3 mt-2">
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={onRollDice}
                       disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
