@@ -1,4 +1,5 @@
 import { Heart, CircleDollarSign, Play, Flag, Store, HelpCircle, Shuffle, Dices } from 'lucide-react';
+import ChatPanel from './ChatPanel';
 
 export const BOARD_TILES = [
   { id: 1, type: 'heart', bgClass: 'bg-pink-100' },
@@ -37,6 +38,13 @@ export const BOARD_TILES = [
 
 export type TileType = typeof BOARD_TILES[number]['type'];
 
+interface ChatMessage {
+  id: string;
+  sender: string;
+  message: string;
+  timestamp: number;
+}
+
 interface GameBoardProps {
   himPosition: number;
   herPosition: number;
@@ -49,9 +57,12 @@ interface GameBoardProps {
   isRolling?: boolean;
   diceResult?: number | null;
   isMyTurn?: boolean;
+  messages?: ChatMessage[];
+  onSendMessage?: (message: string) => void;
+  currentPlayer?: string;
 }
 
-export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, onRollDice, isRolling, diceResult, isMyTurn }: GameBoardProps) {
+export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, onRollDice, isRolling, diceResult, isMyTurn, messages, onSendMessage, currentPlayer }: GameBoardProps) {
   const himAvatar = '/avatars/him-avatar.jpg';
   const herAvatar = '/avatars/her-avatar.jpg';
 
@@ -176,51 +187,64 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
           <div className="grid grid-cols-9 grid-rows-9 gap-1 md:gap-2 w-full aspect-square">
             {BOARD_TILES.map(tile => renderTile(tile.id, tile.type, tile.bgClass))}
             
-            {/* Center Area - Current Turn */}
-            <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex flex-col items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner">
-              <p className="text-xs md:text-sm uppercase font-bold text-slate-400 text-[var(--text-tertiary)] tracking-widest mb-2 md:mb-4">
-                当前回合
-              </p>
-              <div className="h-16 w-16 md:h-24 md:w-24 rounded-full ring-4 ring-primary ring-offset-4 ring-offset-slate-800 overflow-hidden shadow-xl transition-all duration-300 mb-2 md:mb-4">
-                <img
-                  alt="当前回合"
-                  src={turn === 'him' ? himAvatar : herAvatar}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <p className="text-lg md:text-xl font-bold text-slate-800 text-[var(--text-primary)] mb-4">
-                {(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}的回合
-              </p>
-              
-              {/* Dice Button */}
-              {onRollDice && (
-                <button
-                  onClick={onRollDice}
-                  disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
-                  className={`
-                    relative flex flex-col items-center justify-center
-                    w-20 h-20 md:w-28 md:h-28
-                    rounded-2xl
-                    font-bold text-white text-lg md:text-xl
-                    shadow-lg transition-all duration-300
-                    ${isMyTurn && himJoined && herJoined && !isRolling
-                      ? 'bg-gradient-to-br from-pink-500 to-rose-600 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer'
-                      : 'bg-slate-300 cursor-not-allowed'
-                    }
-                  `}
-                >
-                  {isRolling ? (
-                    <div className="text-3xl md:text-4xl animate-bounce">
-                      {diceResult || '🎲'}
-                    </div>
-                  ) : (
-                    <>
-                      <Dices className="w-8 h-8 md:w-10 md:h-10 mb-1" />
-                      <span className="text-xs md:text-sm">掷骰子</span>
-                    </>
+            <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner">
+              <div className="flex flex-col md:flex-row gap-4 w-full max-w-3xl">
+                {messages && onSendMessage && currentPlayer && (
+                  <div className="flex-1 min-w-0">
+                    <ChatPanel
+                      messages={messages}
+                      onSendMessage={onSendMessage}
+                      currentPlayer={currentPlayer}
+                    />
+                  </div>
+                )}
+                
+                <div className="flex-1 flex flex-col items-center justify-center min-w-[200px]">
+                  <p className="text-xs md:text-sm uppercase font-bold text-slate-400 text-[var(--text-tertiary)] tracking-widest mb-2 md:mb-4">
+                    当前回合
+                  </p>
+                  <div className="h-16 w-16 md:h-24 md:w-24 rounded-full ring-4 ring-primary ring-offset-4 ring-offset-slate-800 overflow-hidden shadow-xl transition-all duration-300 mb-2 md:mb-4">
+                    <img
+                      alt="当前回合"
+                      src={turn === 'him' ? himAvatar : herAvatar}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-lg md:text-xl font-bold text-slate-800 text-[var(--text-primary)] mb-4 text-center">
+                    {(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}的回合
+                  </p>
+                  
+                  {/* Dice Button */}
+                  {onRollDice && (
+                    <button
+                      onClick={onRollDice}
+                      disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
+                      className={`
+                        relative flex flex-col items-center justify-center
+                        w-20 h-20 md:w-28 md:h-28
+                        rounded-2xl
+                        font-bold text-white text-lg md:text-xl
+                        shadow-lg transition-all duration-300
+                        ${isMyTurn && himJoined && herJoined && !isRolling
+                          ? 'bg-gradient-to-br from-pink-500 to-rose-600 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer'
+                          : 'bg-slate-300 cursor-not-allowed'
+                        }
+                      `}
+                    >
+                      {isRolling ? (
+                        <div className="text-3xl md:text-4xl animate-bounce">
+                          {diceResult || '🎲'}
+                        </div>
+                      ) : (
+                        <>
+                          <Dices className="w-8 h-8 md:w-10 md:h-10 mb-1" />
+                          <span className="text-xs md:text-sm">掷骰子</span>
+                        </>
+                      )}
+                    </button>
                   )}
-                </button>
-              )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

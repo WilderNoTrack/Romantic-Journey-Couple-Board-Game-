@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import GameBoard, { BOARD_TILES } from './components/GameBoard';
-import ChatPanel from './components/ChatPanel';
 import ChallengeModal from './components/Modals/ChallengeModal';
 import { useTheme } from './contexts/ThemeContext';
 import ShopModal from './components/Modals/ShopModal';
@@ -365,11 +364,6 @@ export default function App() {
           herJoined={!!gameState.players.her}
           logs={gameState.logs || []}
         />
-        <ChatPanel
-          messages={gameState.chatMessages || []}
-          onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
-          currentPlayer={myPlayer.name}
-        />
         <GameBoard 
           himPosition={localHimPos} 
           herPosition={localHerPos} 
@@ -382,6 +376,9 @@ export default function App() {
           isRolling={isRolling}
           diceResult={diceResult}
           isMyTurn={canRoll}
+          messages={gameState.chatMessages || []}
+          onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
+          currentPlayer={myPlayer.name}
         />
       </main>
 
