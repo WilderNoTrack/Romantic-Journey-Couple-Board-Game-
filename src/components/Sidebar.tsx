@@ -1,4 +1,4 @@
-import { CheckCircle, Clock, Zap, Shield, Wand2, CircleDollarSign, Copy, Check, Ticket, PenTool } from 'lucide-react';
+import { CheckCircle, Clock, Zap, Shield, Wand2, CircleDollarSign, Copy, Check, Ticket, PenTool, Dices } from 'lucide-react';
 import { useState } from 'react';
 
 interface SidebarProps {
@@ -22,6 +22,9 @@ interface SidebarProps {
   himJoined: boolean;
   herJoined: boolean;
   logs: { id: string, timestamp: number, message: string }[];
+  onRollDice?: () => void;
+  isRolling?: boolean;
+  diceResult?: number | null;
 }
 
 export default function Sidebar({ 
@@ -44,7 +47,10 @@ export default function Sidebar({
   roomId,
   himJoined,
   herJoined,
-  logs
+  logs,
+  onRollDice,
+  isRolling,
+  diceResult
 }: SidebarProps) {
   const [copied, setCopied] = useState(false);
 
@@ -164,6 +170,43 @@ export default function Sidebar({
           {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
         </button>
       </div>
+
+      {onRollDice && (
+        <div className="bg-[var(--bg-elevated)] rounded-xl shadow-sm border border-[var(--border-accent)] p-4 flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onRollDice}
+              disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
+              className={`
+                flex items-center justify-center gap-1
+                flex-1 h-12
+                rounded-lg
+                font-bold text-white text-sm
+                shadow-lg transition-all duration-300
+                ${isMyTurn && himJoined && herJoined && !isRolling
+                  ? 'bg-gradient-to-br from-pink-500 to-rose-600 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer'
+                  : 'bg-slate-300 cursor-not-allowed'
+                }
+              `}
+            >
+              {isRolling ? (
+                <div className="text-xl animate-bounce">
+                  {diceResult || '🎲'}
+                </div>
+              ) : (
+                <>
+                  <Dices className="w-5 h-5" />
+                  <span>掷骰子</span>
+                </>
+              )}
+            </button>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-xs text-slate-600">
+            <span>当前:</span>
+            <span className="font-bold">{(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}</span>
+          </div>
+        </div>
+      )}
 
       {/* Game Feed */}
       <div className="bg-[var(--bg-elevated)] rounded-xl shadow-sm border border-[var(--border-accent)] overflow-hidden flex flex-col flex-1 min-h-[250px] max-h-[400px]">

@@ -363,6 +363,9 @@ export default function App() {
           himJoined={!!gameState.players.him}
           herJoined={!!gameState.players.her}
           logs={gameState.logs || []}
+          onRollDice={handleRollDice}
+          isRolling={isRolling}
+          diceResult={diceResult}
         />
         <GameBoard 
           himPosition={localHimPos} 
@@ -372,10 +375,6 @@ export default function App() {
           herJoined={!!gameState.players.her}
           himName={gameState.players.him?.name || '他'}
           herName={gameState.players.her?.name || '她'}
-          onRollDice={handleRollDice}
-          isRolling={isRolling}
-          diceResult={diceResult}
-          isMyTurn={canRoll}
           messages={gameState.chatMessages || []}
           onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
           currentPlayer={myPlayer.name}

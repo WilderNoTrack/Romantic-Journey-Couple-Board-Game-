@@ -1,4 +1,4 @@
-import { Heart, CircleDollarSign, Play, Flag, Store, HelpCircle, Shuffle, Dices } from 'lucide-react';
+import { Heart, CircleDollarSign, Play, Flag, Store, HelpCircle, Shuffle } from 'lucide-react';
 import ChatPanel from './ChatPanel';
 
 export const BOARD_TILES = [
@@ -53,16 +53,12 @@ interface GameBoardProps {
   herJoined: boolean;
   himName: string;
   herName: string;
-  onRollDice?: () => void;
-  isRolling?: boolean;
-  diceResult?: number | null;
-  isMyTurn?: boolean;
   messages?: ChatMessage[];
   onSendMessage?: (message: string) => void;
   currentPlayer?: string;
 }
 
-export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, onRollDice, isRolling, diceResult, isMyTurn, messages, onSendMessage, currentPlayer }: GameBoardProps) {
+export default function GameBoard({ himPosition, herPosition, turn, himJoined, herJoined, himName, herName, messages, onSendMessage, currentPlayer }: GameBoardProps) {
   const himAvatar = '/avatars/him-avatar.jpg';
   const herAvatar = '/avatars/her-avatar.jpg';
 
@@ -188,52 +184,15 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
             {BOARD_TILES.map(tile => renderTile(tile.id, tile.type, tile.bgClass))}
             
             <div className="col-start-2 col-span-7 row-start-2 row-span-7 flex items-center justify-center bg-slate-50/50 bg-[var(--bg-tertiary)]/50 rounded-3xl border-2 border-dashed border-primary/20 border-[var(--border-primary)] p-4 md:p-6 shadow-inner">
-              <div className="flex flex-col gap-3 w-full max-w-3xl">
-                {messages && onSendMessage && currentPlayer && (
-                  <div className="w-full">
-                    <ChatPanel
-                      messages={messages}
-                      onSendMessage={onSendMessage}
-                      currentPlayer={currentPlayer}
-                    />
-                  </div>
-                )}
-                
-                {onRollDice && (
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={onRollDice}
-                      disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
-                      className={`
-                        flex items-center justify-center gap-1
-                        w-16 h-10
-                        rounded-lg
-                        font-bold text-white text-xs
-                        shadow-lg transition-all duration-300
-                        ${isMyTurn && himJoined && herJoined && !isRolling
-                          ? 'bg-gradient-to-br from-pink-500 to-rose-600 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer'
-                          : 'bg-slate-300 cursor-not-allowed'
-                        }
-                      `}
-                    >
-                      {isRolling ? (
-                        <div className="text-lg animate-bounce">
-                          {diceResult || '🎲'}
-                        </div>
-                      ) : (
-                        <>
-                          <Dices className="w-4 h-4" />
-                          <span>掷骰子</span>
-                        </>
-                      )}
-                    </button>
-                    <div className="flex items-center gap-2 text-xs text-slate-600">
-                      <span>当前:</span>
-                      <span className="font-bold">{(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+              {messages && onSendMessage && currentPlayer && (
+                <div className="w-full">
+                  <ChatPanel
+                    messages={messages}
+                    onSendMessage={onSendMessage}
+                    currentPlayer={currentPlayer}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
