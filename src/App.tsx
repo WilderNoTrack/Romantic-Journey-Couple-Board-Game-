@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import GameBoard, { BOARD_TILES } from './components/GameBoard';
+import ChatPanel from './components/ChatPanel';
 import ChallengeModal from './components/Modals/ChallengeModal';
 import { useTheme } from './contexts/ThemeContext';
 import ShopModal from './components/Modals/ShopModal';
@@ -54,7 +55,6 @@ export default function App() {
 
   const [localHimPos, setLocalHimPos] = useState(1);
   const [localHerPos, setLocalHerPos] = useState(1);
-  const [chatMessages, setChatMessages] = useState<{id: string, sender: string, message: string, timestamp: number}[]>([]);
 
   useEffect(() => {
     const stored = getStoredRoom();
@@ -68,9 +68,6 @@ export default function App() {
       setGameState(state);
       if (state.customQuestionBanks) {
         setCustomQuestionBanks(state.customQuestionBanks);
-      }
-      if (state.chatMessages) {
-        setChatMessages(state.chatMessages);
       }
       if (!isRolling) {
         if (state.players.him) setLocalHimPos(state.players.him.position);
@@ -195,10 +192,6 @@ export default function App() {
       setModalPlayer(triggerRole);
     });
 
-    socket.on('chatMessage', (message) => {
-      setChatMessages(prev => [...prev, message]);
-    });
-
     return () => {
       socket.off('gameStateUpdate');
       socket.off('diceRolled');
@@ -209,7 +202,6 @@ export default function App() {
       socket.off('levelUp');
       socket.off('boardLevelUp');
       socket.off('specialEvent');
-      socket.off('chatMessage');
     };
   }, [isRolling, role, roomId]);
 
@@ -301,10 +293,6 @@ export default function App() {
     socket.emit('rollDice', { roomId, role });
   };
 
-  const handleSendMessage = (message: string) => {
-    socket.emit('chatMessage', { roomId, role, message });
-  };
-
   const handleBuyItem = (item: 'remoteDice' | 'shield' | 'booster' | 'wishCoupon' | 'customDare', cost: number) => {
     socket.emit('buyItem', { roomId, role, item, cost });
   };
@@ -376,8 +364,10 @@ export default function App() {
           himJoined={!!gameState.players.him}
           herJoined={!!gameState.players.her}
           logs={gameState.logs || []}
-          chatMessages={chatMessages}
-          onSendMessage={handleSendMessage}
+        />
+        <ChatPanel
+          messages={gameState.chatMessages || []}
+          onSendMessage={(message) => socket.emit('chatMessage', { roomId, role, message })}
           currentPlayer={myPlayer.name}
         />
         <GameBoard 

@@ -1,13 +1,5 @@
 import { CheckCircle, Clock, Zap, Shield, Wand2, CircleDollarSign, Copy, Check, Ticket, PenTool } from 'lucide-react';
 import { useState } from 'react';
-import ChatPanel from './ChatPanel';
-
-interface ChatMessage {
-  id: string;
-  sender: string;
-  message: string;
-  timestamp: number;
-}
 
 interface SidebarProps {
   inventory: { remoteDice: number; shield: number; booster: number; wishCoupon: number; customDare: number };
@@ -30,9 +22,6 @@ interface SidebarProps {
   himJoined: boolean;
   herJoined: boolean;
   logs: { id: string, timestamp: number, message: string }[];
-  chatMessages: ChatMessage[];
-  onSendMessage: (message: string) => void;
-  currentPlayer: string;
 }
 
 export default function Sidebar({ 
@@ -55,10 +44,7 @@ export default function Sidebar({
   roomId,
   himJoined,
   herJoined,
-  logs,
-  chatMessages,
-  onSendMessage,
-  currentPlayer
+  logs
 }: SidebarProps) {
   const [copied, setCopied] = useState(false);
 
@@ -178,13 +164,6 @@ export default function Sidebar({
           {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
         </button>
       </div>
-
-      {/* ChatPanel */}
-      <ChatPanel 
-        messages={chatMessages}
-        onSendMessage={onSendMessage}
-        currentPlayer={currentPlayer}
-      />
 
       {/* Game Feed */}
       <div className="bg-[var(--bg-elevated)] rounded-xl shadow-sm border border-[var(--border-accent)] overflow-hidden flex flex-col flex-1 min-h-[250px] max-h-[400px]">
