@@ -154,12 +154,12 @@ export default function StartScreen({ onCreateRoom, onJoinRoom, hasStoredRoom, s
     toast.showToast('题库已删除', 'success');
   };
 
-  const PROMPT_TEMPLATE = `你是一个情侣游戏题目的生成助手。请根据用户提供的关键词生成情侣游戏题目。
+  const PROMPT_TEMPLATE = `你是一个情侣游戏题目的生成助手。请根据用户提供的要求生成情侣游戏题目。
 
 【分级说明】
 - 等级 1（温馨甜蜜）：轻亲密、思念、回忆为主，适度甜蜜
 - 等级 2（适度刺激）：中等亲密、互动、适当暴露
-- 等级 3（热情强烈）：高亲密、激情、全面互动
+- 等级 3（热情强烈）：高亲密、激情、全面互动、露骨
 
 【重要提醒 - 必须遵守】
 - 每个分类必须生成至少 8 条题目
@@ -272,11 +272,11 @@ export default function StartScreen({ onCreateRoom, onJoinRoom, hasStoredRoom, s
 内容
 内容
 
-关键词：{KEYWORDS}`;
+要求：{KEYWORDS}`;
 
   const handleGeneratePrompt = () => {
     if (!keywords.trim()) {
-      toast.showToast('请输入关键词', 'error');
+      toast.showToast('请输入要求', 'error');
       return;
     }
     const prompt = PROMPT_TEMPLATE.replace('{KEYWORDS}', keywords);
@@ -766,6 +766,28 @@ export default function StartScreen({ onCreateRoom, onJoinRoom, hasStoredRoom, s
             </div>
             
             <div className="p-4 flex-1 overflow-y-auto space-y-4">
+              <div className="space-y-3">
+                <p className="font-medium text-sm text-[var(--text-secondary)]">💡 推荐使用以下 AI 平台，效果更好：</p>
+                <div className="flex gap-3">
+                  <a
+                    href="https://chat.deepseek.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-center font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    DeepSeek
+                  </a>
+                  <a
+                    href="https://kimi.moonshot.cn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-center font-medium py-2 rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    Kimi
+                  </a>
+                </div>
+              </div>
+              
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="font-medium text-sm text-[var(--text-secondary)]">步骤 1：复制提示词发给 AI</label>

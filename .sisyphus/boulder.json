@@ -1,0 +1,72 @@
+{
+  "active_plan": "D:\\Program\\game\\.sisyphus\\plans\\chat-room-sync.md",
+  "started_at": "2026-04-05T07:41:43.239Z",
+  "session_ids": [
+    "ses_2b90a327dffeFlfME6psdDwLR4",
+    "ses_2a367d00bffe9vBJAb9FQgWoIv",
+    "ses_2a3639e96ffeHm3Rf7pbNHanIX",
+    "ses_2a35ffccfffeHciiyPmNehSFmQ",
+    "ses_2a35d8bc8ffezcL876OwPUefFy",
+    "ses_2a3589459ffeyOqyp6tVIOtHp5",
+    "ses_2a3518dadffe0tOLeG7f1N0lqx",
+    "ses_2a32bcd17ffez4ADwhpfkIbqrB"
+  ],
+  "plan_name": "chat-room-sync",
+  "agent": "atlas",
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "**后端：添加聊天消息接口和事件处理**",
+      "session_id": "ses_2a367d00bffe9vBJAb9FQgWoIv",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T07:44:26.597Z"
+    },
+    "todo:2": {
+      "task_key": "todo:2",
+      "task_label": "2",
+      "task_title": "**前端：新建 ChatPanel 组件**",
+      "session_id": "ses_2a3639e96ffeHm3Rf7pbNHanIX",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-04-05T07:48:48.415Z"
+    },
+    "todo:3": {
+      "task_key": "todo:3",
+      "task_label": "3",
+      "task_title": "**前端：Sidebar 集成 ChatPanel**",
+      "session_id": "ses_2a35ffccfffeHciiyPmNehSFmQ",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-04-05T07:52:13.140Z"
+    },
+    "todo:4": {
+      "task_key": "todo:4",
+      "task_label": "4",
+      "task_title": "**前端：App.tsx 聊天状态管理**",
+      "session_id": "ses_2a35d8bc8ffezcL876OwPUefFy",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T07:55:19.418Z"
+    },
+    "todo:5": {
+      "task_key": "todo:5",
+      "task_label": "5",
+      "task_title": "**后端：房间1小时保留逻辑**",
+      "session_id": "ses_2a3589459ffeyOqyp6tVIOtHp5",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T08:01:34.366Z"
+    },
+    "todo:6": {
+      "task_key": "todo:6",
+      "task_label": "6",
+      "task_title": "**前端：后台自动同步**",
+      "session_id": "ses_2a3518dadffe0tOLeG7f1N0lqx",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-04-05T08:08:05.394Z"
+    }
+  }
+}
