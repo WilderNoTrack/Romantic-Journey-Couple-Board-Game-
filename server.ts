@@ -14,6 +14,7 @@ const io = new Server(server, {
 });
 
 const PORT = 3000;
+const ROOM_RETENTION_MS = 3600000;
 
 interface PlayerState {
   id: string;
@@ -38,6 +39,13 @@ interface GameLog {
   message: string;
 }
 
+interface ChatMessage {
+  id: string;
+  sender: string;
+  message: string;
+  timestamp: number;
+}
+
 interface GameState {
   roomId: string;
   players: {
@@ -47,6 +55,7 @@ interface GameState {
   turn: 'him' | 'her';
   customDares: string[];
   logs: GameLog[];
+  chatMessages: ChatMessage[];
   boardLevel: number;
   himCompletedLap: boolean;
   herCompletedLap: boolean;
@@ -56,6 +65,7 @@ interface GameState {
     dare: string[];
     punishment: string[];
   }>;
+  cleanupTimeoutId?: NodeJS.Timeout;
 }
 
 const rooms = new Map<string, GameState>();
@@ -101,6 +111,7 @@ io.on('connection', (socket) => {
       turn: 'him',
       customDares: [],
       logs: [],
+      chatMessages: [],
       boardLevel: 1,
       himCompletedLap: false,
       herCompletedLap: false,
@@ -135,6 +146,10 @@ io.on('connection', (socket) => {
       existingPlayer.id = socket.id;
       existingPlayer.disconnected = false;
       if (name) existingPlayer.name = name;
+      if (room.cleanupTimeoutId) {
+        clearTimeout(room.cleanupTimeoutId);
+        room.cleanupTimeoutId = undefined;
+      }
       socket.join(roomId);
       (socket as any).roomId = roomId;
       (socket as any).role = role;
@@ -583,6 +598,38 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('modalSynced', { modalType, modalState, modalPlayer, isOpen });
   });
 
+  socket.on('chatMessage', ({ roomId, role, message }) => {
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage || trimmedMessage.length > 200) return;
+
+    const player = room.players[role as 'him' | 'her'];
+    if (!player) return;
+
+    const chatMessage: ChatMessage = {
+      id: Math.random().toString(36).substring(2, 9),
+      sender: player.name,
+      message: trimmedMessage,
+      timestamp: Date.now(),
+    };
+
+    room.chatMessages.unshift(chatMessage);
+    if (room.chatMessages.length > 100) {
+      room.chatMessages.pop();
+    }
+
+    io.to(roomId).emit('chatMessage', chatMessage);
+  });
+
+  socket.on('requestStateSync', ({ roomId }) => {
+    const room = rooms.get(roomId);
+    if (room) {
+      socket.emit('gameStateUpdate', room);
+    }
+  });
+
   socket.on('disconnect', () => {
     const roomId = (socket as any).roomId;
     const role = (socket as any).role;
@@ -594,11 +641,16 @@ io.on('connection', (socket) => {
         addLog(room, `${playerName} 断开连接`);
         io.to(roomId).emit('gameStateUpdate', room);
         
-        // 两个玩家都断线才删除房间
         const him = room.players.him;
         const her = room.players.her;
         if ((!him || him.disconnected) && (!her || her.disconnected)) {
-          rooms.delete(roomId);
+          if (room.cleanupTimeoutId) {
+            clearTimeout(room.cleanupTimeoutId);
+          }
+          room.cleanupTimeoutId = setTimeout(() => {
+            rooms.delete(roomId);
+            console.log(`Room ${roomId} cleaned up after 1 hour`);
+          }, ROOM_RETENTION_MS);
         }
       }
     }

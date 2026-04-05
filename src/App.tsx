@@ -54,6 +54,7 @@ export default function App() {
 
   const [localHimPos, setLocalHimPos] = useState(1);
   const [localHerPos, setLocalHerPos] = useState(1);
+  const [chatMessages, setChatMessages] = useState<{id: string, sender: string, message: string, timestamp: number}[]>([]);
 
   useEffect(() => {
     const stored = getStoredRoom();
@@ -67,6 +68,9 @@ export default function App() {
       setGameState(state);
       if (state.customQuestionBanks) {
         setCustomQuestionBanks(state.customQuestionBanks);
+      }
+      if (state.chatMessages) {
+        setChatMessages(state.chatMessages);
       }
       if (!isRolling) {
         if (state.players.him) setLocalHimPos(state.players.him.position);
@@ -191,6 +195,10 @@ export default function App() {
       setModalPlayer(triggerRole);
     });
 
+    socket.on('chatMessage', (message) => {
+      setChatMessages(prev => [...prev, message]);
+    });
+
     return () => {
       socket.off('gameStateUpdate');
       socket.off('diceRolled');
@@ -201,8 +209,23 @@ export default function App() {
       socket.off('levelUp');
       socket.off('boardLevelUp');
       socket.off('specialEvent');
+      socket.off('chatMessage');
     };
   }, [isRolling, role, roomId]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && roomId && role) {
+        socket.emit('requestStateSync', { roomId });
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [roomId, role]);
 
   const handleJoinCreatedRoom = (selectedRole: 'him' | 'her') => {
     socket.emit('joinRoom', { roomId, role: selectedRole }, (res: any) => {
@@ -278,6 +301,10 @@ export default function App() {
     socket.emit('rollDice', { roomId, role });
   };
 
+  const handleSendMessage = (message: string) => {
+    socket.emit('chatMessage', { roomId, role, message });
+  };
+
   const handleBuyItem = (item: 'remoteDice' | 'shield' | 'booster' | 'wishCoupon' | 'customDare', cost: number) => {
     socket.emit('buyItem', { roomId, role, item, cost });
   };
@@ -349,6 +376,9 @@ export default function App() {
           himJoined={!!gameState.players.him}
           herJoined={!!gameState.players.her}
           logs={gameState.logs || []}
+          chatMessages={chatMessages}
+          onSendMessage={handleSendMessage}
+          currentPlayer={myPlayer.name}
         />
         <GameBoard 
           himPosition={localHimPos} 
