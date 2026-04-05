@@ -199,31 +199,16 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
                   </div>
                 )}
                 
-                <div className="flex-1 flex flex-col items-center justify-center min-w-[200px]">
-                  <p className="text-xs md:text-sm uppercase font-bold text-slate-400 text-[var(--text-tertiary)] tracking-widest mb-2 md:mb-4">
-                    当前回合
-                  </p>
-                  <div className="h-16 w-16 md:h-24 md:w-24 rounded-full ring-4 ring-primary ring-offset-4 ring-offset-slate-800 overflow-hidden shadow-xl transition-all duration-300 mb-2 md:mb-4">
-                    <img
-                      alt="当前回合"
-                      src={turn === 'him' ? himAvatar : herAvatar}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="text-lg md:text-xl font-bold text-slate-800 text-[var(--text-primary)] mb-4 text-center">
-                    {(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}的回合
-                  </p>
-                  
-                  {/* Dice Button */}
-                  {onRollDice && (
+                {onRollDice && (
+                  <div className="w-full flex items-center gap-3 mt-2">
                     <button
                       onClick={onRollDice}
                       disabled={isRolling || !isMyTurn || !himJoined || !herJoined}
                       className={`
-                        relative flex flex-col items-center justify-center
-                        w-20 h-20 md:w-28 md:h-28
-                        rounded-2xl
-                        font-bold text-white text-lg md:text-xl
+                        flex items-center justify-center gap-1
+                        w-16 h-10
+                        rounded-lg
+                        font-bold text-white text-xs
                         shadow-lg transition-all duration-300
                         ${isMyTurn && himJoined && herJoined && !isRolling
                           ? 'bg-gradient-to-br from-pink-500 to-rose-600 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer'
@@ -232,18 +217,22 @@ export default function GameBoard({ himPosition, herPosition, turn, himJoined, h
                       `}
                     >
                       {isRolling ? (
-                        <div className="text-3xl md:text-4xl animate-bounce">
+                        <div className="text-lg animate-bounce">
                           {diceResult || '🎲'}
                         </div>
                       ) : (
                         <>
-                          <Dices className="w-8 h-8 md:w-10 md:h-10 mb-1" />
-                          <span className="text-xs md:text-sm">掷骰子</span>
+                          <Dices className="w-4 h-4" />
+                          <span>掷骰子</span>
                         </>
                       )}
                     </button>
-                  )}
-                </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-600">
+                      <span>当前:</span>
+                      <span className="font-bold">{(turn === 'him' ? himName : herName) || (turn === 'him' ? '他' : '她')}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
