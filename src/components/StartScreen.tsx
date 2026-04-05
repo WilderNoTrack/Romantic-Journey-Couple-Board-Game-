@@ -566,11 +566,13 @@ export default function StartScreen({ onCreateRoom, onJoinRoom, hasStoredRoom, s
                     <span className="text-[var(--text-primary)]">{bank.name}</span>
                     {selectedBankId === bank.id && <Check className="w-5 h-5 text-pink-500" />}
                   </button>
+                  <button onClick={() => handleEditBank(bank)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg">
+                    <Edit3 className="w-4 h-4" />
+                  </button>
                   {bank.isCustom && (
-                    <>
-                      <button onClick={() => handleEditBank(bank)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg"><Edit3 className="w-4 h-4" /></button>
-                      <button onClick={() => handleDeleteBank(bank.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
-                    </>
+                    <button onClick={() => handleDeleteBank(bank.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   )}
                 </div>
               ))}
