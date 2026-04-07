@@ -23,7 +23,7 @@
 ### 安装
 
 ```bash
-git clone https://github.com/你的用户名/romantic-journey.git
+git clone https://github.com/WilderNoTrack/Romantic-Journey-Couple-Board-Game-.git
 cd romantic-journey
 npm install
 ```
